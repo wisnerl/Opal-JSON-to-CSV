@@ -8,7 +8,7 @@ app.use(express.json());
 const toolsService = new ToolsService(app);
 
 interface JSONInput {
-  results: Record<string, any>;
+  results: Array<Record<string, any>>;
 }
 
 export function convertJSONToCSV(parameters: JSONInput) {
