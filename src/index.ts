@@ -19,8 +19,12 @@ export function convertJSONToCSV(parameters: JSONInput) {
   csvRows.push(headers.join(","));
   for (const row of results) {
     const values = headers.map(header => {
-      const escaped = ("" + row[header]).replace(/"/g, '\\"');
-      return `"${escaped}"`;
+      const val = row[header] == null ? "" : String(row[header]);
+      // RFC 4180: escape double-quotes by doubling them, then wrap if necessary
+      if (val.includes(",") || val.includes('"') || val.includes("\n") || val.includes("\r")) {
+        return `"${val.replace(/"/g, '""')}"`;
+      }
+      return val;
     });
     csvRows.push(values.join(","));
   }
